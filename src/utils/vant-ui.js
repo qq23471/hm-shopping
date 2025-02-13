@@ -1,3 +1,4 @@
 import Vue from 'vue'
-import { Button } from 'vant'
-Vue.use(Button)
+import { Tabbar, TabbarItem } from 'vant'
+Vue.use(Tabbar)
+Vue.use(TabbarItem)
