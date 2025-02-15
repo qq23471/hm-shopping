@@ -32,31 +32,40 @@ export default {
   name: 'loginIndex',
   data () {
     return {
-      captchaCode: '',
-      captchaKey: '',
-      picUrl: '',
-      totalSecond: 60, // 总秒数
-      second: 60,
-      timer: null,
-      mobile: '',
-      smsCode: ''
+      captchaCode: '', // 图形验证码
+      captchaKey: '', // 图形验证码的 key
+      picUrl: '', // 图形验证码图片地址
+      totalSecond: 60, // 验证码倒计时总秒数
+      second: 60, // 当前倒计时秒数
+      timer: null, // 倒计时定时器
+      mobile: '', // 手机号
+      smsCode: '' // 短信验证码
     }
   },
   async created () {
+    // 组件创建时获取图形验证码
     this.getPicCode()
   },
   methods: {
+    // 获取图形验证码
     async getPicCode () {
       const { data: { key, base64 } } = await getPicCode()
       this.picUrl = base64
       this.captchaKey = key
       this.$toast('加载成功')
     },
+    // 获取短信验证码
     async getCode () {
+      // 表单验证
       if (this.validFn() === false) { return false }
+
+      // 判断是否可以发送验证码
       if (this.totalSecond === this.second && !this.timer) {
+        // 发送短信验证码请求
         await getMsgCode(this.captchaCode, this.captchaKey, this.mobile)
         this.$toast('短信验证码已发送,请注意查收')
+
+        // 开始倒计时
         this.timer = setInterval(() => {
           this.second--
           if (this.second <= 0) {
@@ -67,28 +76,38 @@ export default {
         }, 1000)
       }
     },
+    // 表单验证方法
     validFn () {
+      // 验证手机号
       if (!/^1[3-9]\d{9}$/.test(this.mobile)) {
         this.$toast('请输入正确的手机号')
         return false
       }
+      // 验证图形验证码
       if (!/^\w{4}$/.test(this.captchaCode)) {
         this.$toast('请输入正确的图形验证码')
         return false
       }
       return true
     },
+    // 登录方法
     async loginFn () {
+      // 表单验证
       if (this.validFn === false) {
         return
       }
+      // 验证短信验证码
       if (!/^\d{6}$/.test(this.smsCode)) {
         this.$toast('请输入正确的短信验证码')
         return
       }
+
+      // 发送登录请求
       const res = await login(this.mobile, this.smsCode)
+      // 保存用户信息到 Vuex
       this.$store.commit('User/setUserInfo', res.data)
       this.$toast('登录成功')
+      // 跳转到首页
       this.$router.push('/')
     }
   },
