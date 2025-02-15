@@ -1,3 +1,4 @@
+import store from '@/store'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
@@ -40,11 +41,22 @@ const routes = [
   {
     path: '/searchlist', component: () => import('../views/search/list')
   }
-
 ]
-
 const router = new VueRouter({
   routes
+})
+const authUrls = ['/myorder', '/pay']
+router.beforeEach((to, from, next) => {
+  if (!authUrls.includes(to.path)) {
+    next()
+    return
+  }
+  const token = store.getters.token
+  if (token) {
+    next()
+  } else {
+    next('/login')
+  }
 })
 
 export default router
