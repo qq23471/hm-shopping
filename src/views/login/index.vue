@@ -55,7 +55,6 @@ export default {
     async getCode () {
       if (this.validFn() === false) { return false }
       if (this.totalSecond === this.second && !this.timer) {
-        console.log(this.captchaCode)
         await getMsgCode(this.captchaCode, this.captchaKey, this.mobile)
         this.$toast('短信验证码已发送,请注意查收')
         this.timer = setInterval(() => {
@@ -87,9 +86,10 @@ export default {
         this.$toast('请输入正确的短信验证码')
         return
       }
-      await login(this.mobile, this.smsCode)
+      const res = await login(this.mobile, this.smsCode)
+      this.$store.commit('User/setUserInfo', res.data)
       this.$toast('登录成功')
-      this.$router.push('/home')
+      this.$router.push('/')
     }
   },
   destroyed () {
