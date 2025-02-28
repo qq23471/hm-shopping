@@ -36,7 +36,7 @@ const routes = [
     path: '/pay', component: () => import('../views/pay')
   },
   {
-    path: '/prodetail:/:id', component: () => import('../views/prodetail')
+    path: '/prodetail/:id', component: () => import('../views/prodetail')
   },
   {
     path: '/searchlist', component: () => import('../views/search/list')
