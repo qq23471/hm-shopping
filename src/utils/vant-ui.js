@@ -1,7 +1,8 @@
 import Vue from 'vue'
 // 按需引入需要使用的 Vant 组件
-import { Icon, Toast, Tabbar, TabbarItem, NavBar, Search, Swipe, SwipeItem, Grid, GridItem } from 'vant'
+import { Icon, Toast, Tabbar, TabbarItem, NavBar, Search, Swipe, SwipeItem, Grid, GridItem, Rate } from 'vant'
 
+Vue.use(Rate)
 // 注册 Vant 组件到 Vue 实例
 Vue.use(Toast) // 消息提示组件
 Vue.use(NavBar) // 导航栏组件

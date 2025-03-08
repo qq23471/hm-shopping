@@ -38,7 +38,7 @@ export default {
   },
   computed: {
     querySearch () {
-      return this.$route.query.search
+      return this.$route.params.search
     }
   },
   data () {
@@ -77,9 +77,6 @@ export default {
 <style lang="less" scoped>
 .search {
   padding-top: 46px;
-  ::v-deep .van-icon-arrow-left {
-    color: #333;
-  }
   .tool {
     font-size: 24px;
     height: 40px;
@@ -97,8 +94,8 @@ export default {
     }
   }
 }
-
 // 商品样式
 .goods-list {
   background-color: #f6f6f6;
 }
+</style>
